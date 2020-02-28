@@ -9,10 +9,10 @@ import { Line } from './line.model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  @ViewChild(ConditionsComponent) Conditions: {points: Observable<Line>};
+  @ViewChild(ConditionsComponent) Conditions: {list$: Observable<Line>};
   public line: Line;
   title = 'SAIO';
   ngAfterViewInit(): void {
-    this.Conditions.points.subscribe(data => this.line = data);
+    this.Conditions.list$.subscribe(data => this.line = data);
   }
 }

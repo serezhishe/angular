@@ -10,7 +10,6 @@ import { GraphService } from './graph.service';
 })
 export class GraphComponent implements OnInit, OnChanges {
   public chart: Chart;
-  private series = [];
   @Input() line: Line;
   constructor( public graphService: GraphService) {}
   ngOnInit() {
@@ -33,6 +32,8 @@ export class GraphComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges({line: {currentValue}}: SimpleChanges): void {
-    this.graphService.createSerie(this.chart, currentValue, this.series);
+    if (this.chart) {
+      this.graphService.createSerie(this.chart, currentValue);
+    }
   }
 }

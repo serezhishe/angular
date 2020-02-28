@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
-import { GraphModule } from './graph.module';
 
 @Injectable({
-  providedIn: GraphModule,
+  providedIn: 'root',
 })
 export class GraphService {
-
+  /*THIS SERVICE IS REALLY BAD LOOKING, BUT ALL THIS CODE HAS ALMOST NOTHING IN COMMON WITH ANGULAR,
+      SO I WILL REWRITE THIS LATER, IT JUST WORKS, SO I CAN SEE THE RESULT
+      TODO: CLEAN THIS CODE,
+      ADD SOLVING THE MAIN EQUATION LOGIC,
+      HOVER RESULT VIEWING
+      REWRITE DATA SHARING LOGIC WITH NO USING APP COMPONENT
+  */
+  private seriesArray: Array<any> = [];
   constructor() { }
   private solve(points: {x: number, y: number}[], points2: {x: number, y: number}[]) {
     const k1 = -points[0].y / points[points.length - 1].x;
@@ -19,30 +25,26 @@ export class GraphService {
     return {x, y};
   }
 
-  public createSerie(chart, params, seriesArray) {
-    // THIS SERVICE IS REALLY BAD LOOKING, BUT ALL THIS CODE HAS ALMOST NOTHING IN COMMON WITH ANGULAR, SO I WILL REWRITE THIS LATER
-    // IT JUST WORKS, SO I CAN SEE THE RESULT
-    const { sign, points, lineNumber } = params;
-    if (chart) {
-      const serie = {
+  public createSerie(chart, { sign, points, lineNumber }) {
+    const serie = {
         name: `Limitation ${lineNumber + 1}`,
         type: sign === '=' ? 'line' : 'area',
         data: points.sort((a: {x: number}, b: {x: number}) => a.x - b.x),
       };
-      const index = seriesArray.findIndex((a) => a.name === serie.name);
+    const index = this.seriesArray.findIndex((a) => a.name === serie.name);
       // tslint:disable-next-line: max-line-length
-      if (index !== -1 && seriesArray[index].type === serie.type && JSON.stringify(seriesArray[index].data[0]) === JSON.stringify(serie.data[0])
+    if (index !== -1 && this.seriesArray[index].type === serie.type && JSON.stringify(this.seriesArray[index].data[0]) === JSON.stringify(serie.data[0])
         // tslint:disable-next-line: max-line-length
-        && JSON.stringify(seriesArray[index].data[seriesArray[index].data.length - 1]) === JSON.stringify(serie.data[serie.data.length - 1])) {
+        && JSON.stringify(this.seriesArray[index].data[this.seriesArray[index].data.length - 1]) === JSON.stringify(serie.data[serie.data.length - 1])) {
         return;
       }
-      if (index !== -1) {
+    if (index !== -1) {
         chart.removeSeries(index + 1);
-        seriesArray.splice(index, 1);
+        this.seriesArray.splice(index, 1);
       }
-      let t = seriesArray.length;
-      for (let i = 0; i < t; i++) {
-        const elem = seriesArray[i];
+    let t = this.seriesArray.length;
+    for (let i = 0; i < t; i++) {
+        const elem = this.seriesArray[i];
         const newPoint = this.solve(elem.data, serie.data);
         if (isNaN(newPoint.x) || isNaN(newPoint.y)) {
           continue;
@@ -53,13 +55,12 @@ export class GraphService {
         serie.data.sort((a: {x: number}, b: {x: number}) => a.x - b.x);
         chart.removeSeries(i + 1);
         chart.addSeries(elem, true, true);
-        const u = seriesArray.splice(i, 1);
-        seriesArray.push(...u);
+        const u = this.seriesArray.splice(i, 1);
+        this.seriesArray.push(...u);
         i--;
         t--;
       }
-      seriesArray.push(serie);
-      chart.addSeries(seriesArray[seriesArray.length - 1], true, true);
-    }
+    this.seriesArray.push(serie);
+    chart.addSeries(this.seriesArray[this.seriesArray.length - 1], true, true);
   }
 }
