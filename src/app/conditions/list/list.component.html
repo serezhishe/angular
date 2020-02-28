@@ -1,0 +1,6 @@
+<ul>
+    <li *ngFor="let n of formsCount">
+        <span>Inequality number {{n+1}}: </span>
+        <app-num-input [counter]="n" (Inequal)="OnIneq($event)"></app-num-input>
+    </li>
+</ul>
