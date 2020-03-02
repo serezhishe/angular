@@ -8,7 +8,6 @@ import { GraphComponent } from './graph/graph.component';
 import { GraphModule } from './graph/graph.module';
 import { ConditionsModule } from './conditions/conditions.module';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +22,6 @@ import { ConditionsModule } from './conditions/conditions.module';
     ConditionsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

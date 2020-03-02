@@ -1,0 +1,6 @@
+<ul>
+    <li *ngFor="let formIndex of formsCount">
+        <span>Inequality number {{formIndex+1}}: </span>
+        <app-inequality-form [counter]="formIndex"></app-inequality-form>
+    </li>
+</ul>

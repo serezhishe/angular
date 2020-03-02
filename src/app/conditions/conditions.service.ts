@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Line } from '../line.model';
-import { Limitation } from './num-input/group.model';
-import { ConditionsModule } from './conditions.module';
+import { ILine } from '../shared/models/line.model';
+import { ILimitation } from '../shared/models/group.model';
 
 @Injectable({
-  providedIn: ConditionsModule,
+  providedIn: 'root',
 })
 export class ConditionsService {
   constructor() { }
-  castLimitationToLine(limit: Limitation): Line {
+  castLimitationToLine(limit: ILimitation): ILine {
     return {
       points: [{
         x: limit.X1 ? limit.limit / limit.X1 : 0,
@@ -23,7 +22,7 @@ export class ConditionsService {
     };
   }
 
-  checkChanges(previous: Line, current: Line): boolean {
+  checkChanges(previous: ILine, current: ILine): boolean {
     for (const ind in previous) {
       if (JSON.stringify(previous[ind]) !== JSON.stringify(current[ind])) {
         return false;
@@ -32,7 +31,7 @@ export class ConditionsService {
     return true;
   }
 
-  changeIndexesLength(indexes: number[], length) {
+  changeIndexesLength(indexes: number[], length: number): void {
     if (length > indexes.length) {
       for (let j = indexes.length; j <= length; j++) {
         indexes.push(j);

@@ -1,19 +1,22 @@
+import { ITargetFunction } from './../../shared/models/target-function.model';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { DataTransferService } from 'src/app/shared/services/data-transfer.service';
 
 @Component({
   selector: 'app-init',
   templateUrl: './init.component.html',
-  styleUrls: ['./init.component.css']
+  styleUrls: ['./init.component.css'],
 })
 export class InitComponent implements OnInit {
+  @Output()
+  initial: EventEmitter<any> = new EventEmitter();
+
   public initForm: FormGroup;
   public functionForm: FormGroup;
-  @Output() Initial: EventEmitter<any> = new EventEmitter();
-  @Output() FunctionParams: EventEmitter<any> = new EventEmitter();
   private initGroup: { inequalities: number };
-  private functionGroup: { X1: number, X2: number};
-  constructor(private formBuilder: FormBuilder) {}
+  private functionGroup: ITargetFunction;
+  constructor(private formBuilder: FormBuilder, private dataTransfer: DataTransferService) {}
 
   ngOnInit(): void {
     this.initGroup = {
@@ -27,10 +30,10 @@ export class InitComponent implements OnInit {
     this.functionForm = this.formBuilder.group(this.functionGroup);
   }
 
-  onSubmit(data: {inequalities: number}) {
-    this.Initial.emit(data);
+  onSubmit(data: {inequalities: number}): void {
+    this.initial.emit(data);
   }
-  onFunctionParams(something: { X1: number, X2: number}) {
-    this.FunctionParams.emit(something);
+  onFunctionParams(params: ITargetFunction): void {
+    this.dataTransfer.updateTargetFunction(params);
   }
 }

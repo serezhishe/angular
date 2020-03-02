@@ -1,18 +1,14 @@
-import { Component, Input, ViewChild, AfterViewInit } from '@angular/core';
-import { ConditionsComponent } from './conditions/conditions.component';
-import { Observable } from 'rxjs';
-import { Line } from './line.model';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements AfterViewInit {
-  @ViewChild(ConditionsComponent) Conditions: {list$: Observable<Line>};
-  public line: Line;
-  title = 'SAIO';
-  ngAfterViewInit(): void {
-    this.Conditions.list$.subscribe(data => this.line = data);
+export class AppComponent {
+  public title: string;
+
+  constructor() {
+    this.title = 'SAIO';
   }
 }

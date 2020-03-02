@@ -6,10 +6,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InitComponent } from './init.component';
 
-
 @NgModule({
   declarations: [
-    InitComponent
+    InitComponent,
   ],
   imports: [
     CommonModule,
@@ -19,7 +18,7 @@ import { InitComponent } from './init.component';
     ReactiveFormsModule,
   ],
   exports: [
-    InitComponent
-  ]
+    InitComponent,
+  ],
 })
 export class InitModule { }

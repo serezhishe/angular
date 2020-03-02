@@ -4,13 +4,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NumInputComponent } from './num-input.component';
-import {MatSelectModule} from '@angular/material/select';
-
+import { InequalityFormComponent } from './inequality-form.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
-    NumInputComponent
+    InequalityFormComponent,
   ],
   imports: [
     CommonModule,
@@ -26,8 +25,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatButtonModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    NumInputComponent,
-    MatSelectModule
-  ]
+    InequalityFormComponent,
+    MatSelectModule,
+  ],
 })
-export class NumInputModule { }
+export class InequalityFormModule { }
