@@ -10,10 +10,7 @@ import { Injectable } from '@angular/core';
 export class GraphService {
   /*THIS SERVICE IS REALLY BAD LOOKING, BUT ALL THIS CODE HAS ALMOST NOTHING IN COMMON WITH ANGULAR,
       SO I WILL REWRITE THIS LATER, IT JUST WORKS, SO I CAN SEE THE RESULT
-      TODO: CLEAN THIS CODE,
-      ADD SOLVING THE MAIN EQUATION LOGIC,
-      HOVER RESULT VIEWING
-      REWRITE DATA SHARING LOGIC WITH NO USING APP COMPONENT
+      TODO: CLEAN THIS CODE
   */
   private seriesArray: Array<ISerie>;
   private biggestY: number;
@@ -53,6 +50,7 @@ export class GraphService {
   }
 
   private updateBiggestY(): void {
+    this.biggestY = 0;
     this.seriesArray.forEach(serie => {
       if (serie.data[0].y > this.biggestY) {
         this.biggestY = serie.data[0].y;
@@ -61,6 +59,7 @@ export class GraphService {
   }
 
   private updateBiggestX(): void {
+    this.biggestX = 0;
     this.seriesArray.forEach(serie => {
       if (serie.data[serie.data.length - 1].x > this.biggestX) {
         this.biggestX = serie.data[serie.data.length - 1].x;
@@ -74,7 +73,7 @@ export class GraphService {
 
   public updateSeries(chart): void {
     this.seriesArray.forEach(serie => {
-      chart.addSeries(serie);
+      chart.addSeries(serie, true, true);
     });
   }
 
@@ -84,14 +83,14 @@ export class GraphService {
     const { sign, points, lineNumber } = line;
     let type: string;
     switch (sign) {
-      case '<=':
-        type = 'area';
-        break;
       case '=':
         type = 'line';
         break;
       case '>=':
         type = 'arearange';
+        break;
+      default:
+        type = 'area';
         break;
     }
     const serie = {
@@ -140,12 +139,9 @@ export class GraphService {
         }
         return point = [point.x, point.y, this.biggestY + 1];
       });
-      console.log(this.biggestX);
       if (this.biggestX > tmpSerie.data[tmpSerie.data.length - 1][0]) {
-        console.log(tmpSerie.data);
         tmpSerie.data.push([this.biggestX + 1, 0, this.biggestY + 1]);
       }
-      console.log(tmpSerie.data);
       this.seriesArray.push(tmpSerie);
     } else {
       this.seriesArray.push(serie);

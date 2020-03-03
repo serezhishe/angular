@@ -31,7 +31,13 @@ export class GraphComponent implements OnInit {
           y: 0,
         }],
       }],
+      tooltip: {
+        formatter() {
+          return 'X1: ' + this.x.toFixed(3) + ' X2: ' + this.y.toFixed(3);
+        }
+      }
     });
+
     this.dataTransferService.getTargetFunctionStream()
       .pipe(
         distinctUntilChanged(),
@@ -55,7 +61,8 @@ export class GraphComponent implements OnInit {
         }],
           tooltip: {
             formatter() {
-              return 'Target function: ' + targetFunction(this);
+              return 'Target function: ' + targetFunction(this).toFixed(3) + '<br>' +
+              'X1: ' + this.x.toFixed(3) + ' X2: ' + this.y.toFixed(3);
             }
           }
         });

@@ -1,0 +1,13 @@
+app-conditions {
+    display: inline-block;
+    width: 30vw;    
+}
+
+app-graph {
+    display: inline-block;
+    width: 70vw;
+}
+
+div {
+    display: flex;
+}

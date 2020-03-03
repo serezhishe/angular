@@ -1,17 +1,31 @@
 import { NgModule } from '@angular/core';
-import { InequalitiesListModule } from './inequalities-list/inequalities-list.module';
-import { InitModule } from './init/init.module';
+import { InequalitiesListComponent } from './inequalities-list/inequalities-list.component';
+import { InequalityFormComponent } from './inequality-form/inequality-form.component';
+import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { InitComponent } from './init/init.component';
 
 @NgModule({
   declarations: [
+    InequalitiesListComponent,
+    InequalityFormComponent,
+    InitComponent,
   ],
   imports: [
-    InequalitiesListModule,
-    InitModule,
+    CommonModule,
+    MatInputModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatSelectModule,
   ],
   exports: [
-    InequalitiesListModule,
-    InitModule,
+    InequalitiesListComponent,
+    InitComponent,
   ]
 })
 export class ConditionsModule { }
