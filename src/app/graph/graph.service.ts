@@ -17,9 +17,11 @@ export class GraphService {
   */
   private seriesArray: Array<ISerie>;
   private biggestY: number;
+  private biggestX: number;
 
   constructor() {
     this.biggestY = 0;
+    this.biggestX = 0;
     this.seriesArray = [];
   }
 
@@ -58,6 +60,14 @@ export class GraphService {
     });
   }
 
+  private updateBiggestX(): void {
+    this.seriesArray.forEach(serie => {
+      if (serie.data[serie.data.length - 1].x > this.biggestX) {
+        this.biggestX = serie.data[serie.data.length - 1].x;
+      }
+    });
+  }
+
   public createTargetFunction(params: ITargetFunction): (arg0: IPoint) => number {
     return (point: IPoint) => params.X1 * point.x + params.X2 * point.y;
   }
@@ -70,6 +80,7 @@ export class GraphService {
 
   public createSerie(chart, line: ILine): void {
     this.updateBiggestY();
+    this.updateBiggestX();
     const { sign, points, lineNumber } = line;
     let type: string;
     switch (sign) {
@@ -124,8 +135,17 @@ export class GraphService {
         if (point.y > this.biggestY) {
           this.biggestY = point.y;
         }
+        if (point.x > this.biggestX) {
+          this.biggestX = point.x;
+        }
         return point = [point.x, point.y, this.biggestY + 1];
       });
+      console.log(this.biggestX);
+      if (this.biggestX > tmpSerie.data[tmpSerie.data.length - 1][0]) {
+        console.log(tmpSerie.data);
+        tmpSerie.data.push([this.biggestX + 1, 0, this.biggestY + 1]);
+      }
+      console.log(tmpSerie.data);
       this.seriesArray.push(tmpSerie);
     } else {
       this.seriesArray.push(serie);
