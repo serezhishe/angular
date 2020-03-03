@@ -1,8 +1,4 @@
-import { DataTransferService } from 'src/app/shared/services/data-transfer.service';
-import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, Input } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { InitComponent } from './init/init.component';
-import { ILine } from '../shared/models/line.model';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ConditionsService } from './conditions.service';
 
 @Component({
@@ -12,16 +8,14 @@ import { ConditionsService } from './conditions.service';
 })
 export class ConditionsComponent implements OnInit, AfterViewInit {
   public formIndexes: number[];
-  private list$: Observable<ILine>;
 
-  constructor(private conditionsService: ConditionsService, private dataTransferService: DataTransferService) { }
+  constructor(private conditionsService: ConditionsService) { }
 
   ngOnInit(): void {
     this.formIndexes = [];
   }
 
   ngAfterViewInit(): void {
-    this.list$ = this.dataTransferService.getLineStream();
   }
 
   onInitial(event: {inequalities: number}): void {

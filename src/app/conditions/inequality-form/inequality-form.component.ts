@@ -9,10 +9,11 @@ import { DataTransferService } from 'src/app/shared/services/data-transfer.servi
   styleUrls: ['./inequality-form.component.css'],
 })
 export class InequalityFormComponent implements OnInit {
-  public labels = ['X1', 'X2'];
-  public checkoutForm: FormGroup;
   @Input()
   public counter: number;
+
+  public labels = ['X1', 'X2'];
+  public checkoutForm: FormGroup;
   public signs: string[];
   public selected: string;
   public signControl = 'sign';

@@ -1,12 +1,12 @@
 <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
     <ng-container *ngFor="let label of labels">
-        <mat-form-field>
+        <mat-form-field class="number">
             <mat-label>{{label}}</mat-label>
             <input matInput required placeholder="0" value="" type="number" [formControlName]="label">
         </mat-form-field>
         {{label}}
     </ng-container>
-    <mat-form-field class='sign'>
+    <mat-form-field class="sign">
       <mat-label>Sign</mat-label>
       <mat-select [(value)]="selected" required [formControlName]="signControl">
         <mat-option *ngFor="let sign of signs" [value]="sign">
@@ -14,7 +14,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="number">
         <mat-label>Number</mat-label>
         <input required matInput placeholder="0" value="" type="number" formControlName="limit">
     </mat-form-field>

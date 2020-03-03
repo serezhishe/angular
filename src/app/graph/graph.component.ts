@@ -57,7 +57,23 @@ export class GraphComponent implements OnInit {
           data: [{
             x: 0,
             y: 0,
+          }, {
+            x: targetFunction({x: 1, y: 0}),
+            y: targetFunction({x: 0, y: 1}),
           }],
+        }, {
+          name: '123',
+          type: 'line',
+          data: [{
+            x: 0,
+            y: targetFunction({x: 0, y: 1}) + targetFunction({x: 1, y: 0}) *  targetFunction({x: 1, y: 0}) / targetFunction({x: 0, y: 1}),
+          }, {
+            x: targetFunction({x: 1, y: 0}),
+            y: targetFunction({x: 0, y: 1}),
+          }, {
+            x: targetFunction({x: 1, y: 0}) + targetFunction({x: 0, y: 1}) * targetFunction({x: 0, y: 1}) / targetFunction({x: 1, y: 0}),
+            y: 0,
+          }]
         }],
           tooltip: {
             formatter() {
