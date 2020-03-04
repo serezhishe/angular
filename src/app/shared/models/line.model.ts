@@ -1,7 +1,8 @@
 export interface ILine {
-  points: {
-    x: number,
-    y: number}[];
   lineNumber: number;
+  points: Array<{
+    x: number;
+    y: number;
+  }>;
   sign: string;
 }

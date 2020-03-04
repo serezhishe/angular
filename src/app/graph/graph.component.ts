@@ -39,11 +39,8 @@ export class GraphComponent implements OnInit {
     });
 
     this.dataTransferService.getTargetFunctionStream()
-      .pipe(
-        distinctUntilChanged(),
-        map(params => this.graphService.createTargetFunction(params))
-      )
-      .subscribe((targetFunction) => {
+      .subscribe((params) => {
+        const targetFunction = this.graphService.createTargetFunction(params);
         this.chart = new Chart({
         chart: {
           type: 'area',
@@ -58,20 +55,20 @@ export class GraphComponent implements OnInit {
             x: 0,
             y: 0,
           }, {
-            x: targetFunction({x: 1, y: 0}),
-            y: targetFunction({x: 0, y: 1}),
+            x: params.X1,
+            y: params.X2,
           }],
         }, {
           name: '123',
           type: 'line',
           data: [{
             x: 0,
-            y: targetFunction({x: 0, y: 1}) + targetFunction({x: 1, y: 0}) *  targetFunction({x: 1, y: 0}) / targetFunction({x: 0, y: 1}),
+            y: params.X2 + params.X1 *  params.X1 / params.X2,
           }, {
-            x: targetFunction({x: 1, y: 0}),
-            y: targetFunction({x: 0, y: 1}),
+            x: params.X1,
+            y: params.X2,
           }, {
-            x: targetFunction({x: 1, y: 0}) + targetFunction({x: 0, y: 1}) * targetFunction({x: 0, y: 1}) / targetFunction({x: 1, y: 0}),
+            x: params.X1 + params.X2 * params.X2 / params.X1,
             y: 0,
           }]
         }],
