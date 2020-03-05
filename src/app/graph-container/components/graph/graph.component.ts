@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'angular-highcharts';
 import { combineLatest, Subscription } from 'rxjs';
-import { auditTime } from 'rxjs/operators';
+import { auditTime, last } from 'rxjs/operators';
 
 import { ILine } from '../../models/line.model';
 import { DataTransferService } from '../../services/data-transfer.service';
 import { GraphService } from '../../services/graph.service';
 
+const ANIMATION_DURATION = 2000;
 @Component({
   selector: 'app-graph',
   templateUrl: './graph.component.html',
@@ -26,7 +27,7 @@ export class GraphComponent implements OnInit {
     this.chart = new Chart({
       chart: {
         animation: {
-            duration: 2000,
+            duration: ANIMATION_DURATION,
         },
         type: 'area',
       },
@@ -58,7 +59,7 @@ export class GraphComponent implements OnInit {
     });
 
     this.chartSubscription = combineLatest([this.dataTransferService.getTargetFunctionStream(), this.chart.ref$])
-      .pipe(auditTime(2000))
+      .pipe(auditTime(ANIMATION_DURATION))
       .subscribe(([params, charts]) => {
         const targetFunction = this.graphService.createTargetFunction(params);
         charts.options.tooltip.formatter = function(): string {
@@ -102,7 +103,7 @@ export class GraphComponent implements OnInit {
 
     this.dataTransferService.getLineStream()
       .subscribe((line: ILine) => {
-        this.graphService.createSerie(this.chart, line);
+        this.graphService.createSerie(this.chart.ref$.pipe(last()), line);
     });
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
-import { last, withLatestFrom } from 'rxjs/operators';
+import { withLatestFrom } from 'rxjs/operators';
 
 import { ILine } from '../models/line.model';
 import { IPoint } from '../models/point.model';
@@ -27,35 +27,36 @@ export class GraphService {
     };
   }
 
-  public createSerie(chart: any, line: ILine): void {
+  public createSerie(chart$: Observable<any>, line: ILine): void {
     this.updateBorderY();
     this.updateBorderX();
     const serie = new Serie(line, this.border);
-    const chart$ = (chart.ref$ as Observable<any>).pipe(last());
     const index = this.series.findIndex((a) => a.id === serie.id);
     if (index !== -1 && this.checkIfSeriesAreEqual(this.series[index], serie)) {
       return;
       }
     if (index !== -1) {
-      chart$.subscribe((obs) => obs.get(serie.id).update({
+      chart$.subscribe((chart) => {
+        chart.get(serie.id).update({
           type: serie.type,
           data: serie.data,
-        }));
-      }
-
+          });
+        this.series.splice(index, 1);
+      });
+    }
     const series$ = from(this.series);
     series$.pipe(withLatestFrom(chart$))
-      .subscribe(([elem, chartik]) => {
+      .subscribe(([elem, chart]) => {
         const newPoint = this.getCommonPoint(elem.points, serie.points);
         if (!isNaN(newPoint.x) && !isNaN(newPoint.y)) {
           const j = elem.addPoint(newPoint, this.border);
           serie.addPoint(newPoint, this.border);
-          chartik.get(elem.id).addPoint(elem.data[j]);
+          chart.get(elem.id).addPoint(elem.data[j]);
         }
       });
+    this.series.push(serie);
     if (index === -1) {
-      this.series.push(serie);
-      chart$.subscribe((obs) => obs.addSeries(this.series[this.series.length - 1], true, true));
+      chart$.subscribe((chart) => chart.addSeries(this.series[this.series.length - 1], true, true));
     }
   }
 
