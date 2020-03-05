@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { DataTransferService } from 'src/app/shared/services/data-transfer.service';
 
-import { ILimitation } from '../../shared/models/group.model';
+import { ILimitation } from '../../models/group.model';
+import { DataTransferService } from '../../services/data-transfer.service';
 
 @Component({
   selector: 'app-inequality-form',

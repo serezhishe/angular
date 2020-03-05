@@ -1,75 +1,78 @@
 import { Injectable } from '@angular/core';
+import { from, Observable } from 'rxjs';
+import { last, withLatestFrom } from 'rxjs/operators';
 
-import { ILine } from './../shared/models/line.model';
-import { IPoint } from './../shared/models/point.model';
-import { Serie } from './../shared/models/serie.model';
-import { ITargetFunction } from './../shared/models/target-function.model';
+import { ILine } from '../models/line.model';
+import { IPoint } from '../models/point.model';
+import { Serie } from '../models/serie.model';
+import { ITargetFunction } from '../models/target-function.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GraphService {
+  /* TODO: deleting old points,
+    updating >= series by x axis and y axis
+    finding point at which target fuction at it's max value
+    creating target function value line through this point
+  */
   private readonly border: IPoint;
   private readonly series: Serie[];
 
   public constructor() {
     this.series = [];
-    this.border = {x: 0, y: 0};
+    this.border = {
+      x: 0,
+      y: 0,
+    };
   }
 
   public createSerie(chart: any, line: ILine): void {
     this.updateBorderY();
     this.updateBorderX();
     const serie = new Serie(line, this.border);
-
-    const index = this.series.findIndex((a) => a.name === serie.name);
+    const chart$ = (chart.ref$ as Observable<any>).pipe(last());
+    const index = this.series.findIndex((a) => a.id === serie.id);
     if (index !== -1 && this.checkIfSeriesAreEqual(this.series[index], serie)) {
-        return;
+      return;
       }
     if (index !== -1) {
-        chart.removeSeries(index + 1);
-        this.series.splice(index, 1);
+      chart$.subscribe((obs) => obs.get(serie.id).update({
+          type: serie.type,
+          data: serie.data,
+        }));
       }
-    let t = this.series.length;
-    for (let i = 0; i < t; i++) {
-        const elem = this.series[i];
+
+    const series$ = from(this.series);
+    series$.pipe(withLatestFrom(chart$))
+      .subscribe(([elem, chartik]) => {
         const newPoint = this.getCommonPoint(elem.points, serie.points);
-        if (isNaN(newPoint.x) || isNaN(newPoint.y)) {
-          continue;
+        if (!isNaN(newPoint.x) && !isNaN(newPoint.y)) {
+          const j = elem.addPoint(newPoint, this.border);
+          serie.addPoint(newPoint, this.border);
+          chartik.get(elem.id).addPoint(elem.data[j]);
         }
-        elem.addPoint(newPoint, this.border);
-        serie.addPoint(newPoint, this.border);
-        chart.removeSeries(i + 1);
-        chart.addSeries(elem, true, true);
-        const u = this.series.splice(i, 1);
-        this.series.push(...u);
-        i--;
-        t--;
-      }
-    this.series.push(serie);
-    chart.addSeries(this.series[this.series.length - 1], true, true);
+      });
+    if (index === -1) {
+      this.series.push(serie);
+      chart$.subscribe((obs) => obs.addSeries(this.series[this.series.length - 1], true, true));
+    }
   }
 
   public createTargetFunction(params: ITargetFunction): (arg0: IPoint) => number {
     return (point: IPoint) => params.X1 * point.x + params.X2 * point.y;
   }
 
-  public updateSeries(chart: any): void {
-    this.series.forEach((serie) => {
-      chart.addSeries(serie, true, true);
-    });
-  }
-
   private checkIfSeriesAreEqual(line1: Serie, line2: Serie): boolean {
-    const lastElemInLine1 = line1[line1.data.length - 1];
-    const lastElemInLine2 = line2[line2.data.length - 1];
+    const lastPointInLine1 = line1.data[line1.data.length - 1];
+    const lastPointInLine2 = line2.data[line2.data.length - 1];
     if (line1.type !== line2.type) {
       return false;
     }
     if (JSON.stringify(line1.data[0]) !== JSON.stringify(line2.data[0])) {
       return false;
     }
-    if (JSON.stringify(lastElemInLine1) !== JSON.stringify(lastElemInLine2)) {
+    if (JSON.stringify(lastPointInLine1) !== JSON.stringify(lastPointInLine2)) {
       return false;
     }
 

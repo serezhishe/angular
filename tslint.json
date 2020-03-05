@@ -22,7 +22,7 @@
       "check-space"
     ],
     "cyclomatic-complexity": [true, 20],
-    "newline-per-chained-call": true,
+    "newline-per-chained-call": false,
     "no-floating-promises": false,
     "quotemark": [true, "single", "avoid-escape", "avoid-template"],
     "promise-function-async": false,
@@ -30,6 +30,12 @@
     "prefer-function-over-method": false,
     "no-submodule-imports": false,
     "no-unsafe-any": false,
+    "no-unused-variable": [
+      true,
+      {
+        "ignore-pattern": "^_"
+        }
+      ],
     "no-inferrable-types": false,
     "no-null-keyword": false,
     "no-parameter-properties": false,

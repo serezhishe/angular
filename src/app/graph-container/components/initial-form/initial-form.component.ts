@@ -1,15 +1,15 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { DataTransferService } from 'src/app/shared/services/data-transfer.service';
 
-import { ITargetFunction } from './../../shared/models/target-function.model';
+import { ITargetFunction } from '../../models/target-function.model';
+import { DataTransferService } from '../../services/data-transfer.service';
 
 @Component({
-  selector: 'app-init',
-  styleUrls: ['./init.component.css'],
-  templateUrl: './init.component.html',
+  selector: 'app-initial-form',
+  styleUrls: ['./initial-form.component.css'],
+  templateUrl: './initial-form.component.html',
 })
-export class InitComponent implements OnInit {
+export class InitialFormComponent implements OnInit {
   public functionForm: FormGroup;
 
   public initForm: FormGroup;

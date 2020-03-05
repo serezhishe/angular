@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
+import { GraphContainerComponent } from './graph-container/graph-container.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  { path: 'graph', component: GraphContainerComponent},
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule { }

@@ -4,9 +4,9 @@ import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
 import { ILimitation } from '../models/group.model';
 
-import { ConditionsService } from './../../conditions/conditions.service';
 import { ILine } from './../models/line.model';
 import { ITargetFunction } from './../models/target-function.model';
+import { ConditionsService } from './conditions.service';
 
 @Injectable({
   providedIn: 'root',

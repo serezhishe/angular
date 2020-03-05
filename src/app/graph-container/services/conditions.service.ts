@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { ILimitation } from '../shared/models/group.model';
-import { ILine } from '../shared/models/line.model';
+import { ILimitation } from '../models/group.model';
+import { ILine } from '../models/line.model';
 
 @Injectable({
   providedIn: 'root',

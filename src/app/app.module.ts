@@ -1,25 +1,20 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ConditionsComponent } from './conditions/conditions.component';
-import { GraphComponent } from './graph/graph.component';
-import { GraphModule } from './graph/graph.module';
-import { ConditionsModule } from './conditions/conditions.module';
+import { GraphModule } from './graph-container/graph.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ConditionsComponent,
-    GraphComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     GraphModule,
-    ConditionsModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
