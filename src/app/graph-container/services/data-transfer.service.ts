@@ -20,11 +20,10 @@ export class DataTransferService {
     this.inequalities$ = new Subject();
   }
 
-  public getLineStream(): Observable<ILine> {
+  public getLineStream(): Observable<ILimitation> {
     return this.inequalities$.pipe(
       distinctUntilChanged((prev, next) => this.conditionsService.checkChanges(prev, next)),
-      map((limitation) => this.conditionsService.castLimitationToLine(limitation)),
-      switchMap((line) => new Observable<ILine>((subscriber) => {
+      switchMap((line) => new Observable<ILimitation>((subscriber) => {
         subscriber.next(line);
       })),
     );

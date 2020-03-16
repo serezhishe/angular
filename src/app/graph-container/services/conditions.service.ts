@@ -7,22 +7,6 @@ import { ILine } from '../models/line.model';
   providedIn: 'root',
 })
 export class ConditionsService {
-  public castLimitationToLine(limit: ILimitation): ILine {
-    return {
-      lineNumber: limit.lineNumber,
-      points: [
-        {
-          x: limit.X1 !== 0 ? limit.limit / limit.X1 : 0,
-          y: 0,
-        },
-        {
-          x: 0,
-          y: limit.X2 !== 0 ? limit.limit / limit.X2 : 0,
-        },
-      ],
-      sign: limit.sign,
-    };
-  }
 
   public changeIndexesLength(indexes: number[], length: number): void {
     if (length > indexes.length) {
